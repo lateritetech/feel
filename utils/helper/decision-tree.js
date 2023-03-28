@@ -175,7 +175,7 @@ const traverseDecisionTreeUtil = (root, payload) => {
       const { decisionMap } = payload;
 
       return new Promise((resolve, reject) => {
-        const inputExpressionValue = payload[classKey];
+        const inputExpressionValue = _.get(payload, classKey);
         if (typeof inputExpressionValue !== 'undefined') {
           //! the input expression is resolved from payload
           Promise.all(sentinelKeys.map(key => node.children[key].ast.build(payload, {}, 'input'))).then((results) => {

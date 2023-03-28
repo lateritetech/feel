@@ -14,3 +14,4 @@ coverage
 
 # GitLab
 .gitlab-ci.yml
+.idea/

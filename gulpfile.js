@@ -14,7 +14,7 @@ const peg = require('./utils/dev/gulp-pegjs');
 const minimist = require('minimist');
 const gutil = require('gulp-util');
 const mocha = require('gulp-mocha');
-var istanbul = require('gulp-istanbul');
+const istanbul = require('gulp-istanbul');
 const eslint = require('gulp-eslint');
 const through = require('through2');
 
@@ -47,18 +47,18 @@ gulp.task('concat:feel', () => gulp.src(['./temp/feel-initializer.js', './gramma
   .pipe(gulp.dest('./src/')));
 
 // gulp.task('clean:temp', ['initialize:feel', 'concat:feel']
-gulp.task('clean:temp', () => gulp.src('./temp', {read: false})
+gulp.task('clean:temp', () => gulp.src('./temp', { read: false, allowEmpty: true })
   .pipe(clean()));
 
 // gulp.task('clean:dist:feel', ['src:lint']
-gulp.task('clean:dist:feel', () => gulp.src('./dist/feel.js', {read: false})
+gulp.task('clean:dist:feel', () => gulp.src('./dist/feel.js', { read: false, allowEmpty: true })
   .pipe(clean()));
 
 // gulp.task('clean:dist:feel:ast', ['src:lint']
-gulp.task('clean:dist:feel:ast', () => gulp.src('./dist/feel-ast*.js', {read: false})
+gulp.task('clean:dist:feel:ast', () => gulp.src('./dist/feel-ast*.js', { read: false, allowEmpty: true })
   .pipe(clean()));
 
-gulp.task('clean:src:feel', () => gulp.src('./src/feel.pegjs', {read: false})
+gulp.task('clean:src:feel', () => gulp.src('./src/feel.pegjs', { read: false, allowEmpty: true })
   .pipe(clean()));
 
 // gulp.task('generate:parser', ['clean:dist:feel', 'concat:feel']
@@ -66,7 +66,7 @@ gulp.task('generate:parser', () => gulp.src('src/feel.pegjs')
   .pipe(peg({
     format: 'commonjs',
     cache: true,
-    allowedStartRules: ["Start", "SimpleExpressions", "UnaryTests", "SimpleUnaryTests"]
+    allowedStartRules: ['Start', 'SimpleExpressions', 'UnaryTests', 'SimpleUnaryTests']
   }))
   .pipe(gulp.dest('./dist')));
 
@@ -78,8 +78,8 @@ gulp.task('dist:feel:ast', () => gulp.src('src/feel-ast.js')
 gulp.task('dist:feel:ast:parser', () => gulp.src('src/feel-ast-parser.js')
   .pipe(gulp.dest('./dist')));
 
-gulp.task('mocha', () => gulp.src(['test/*.js'], {read: false})
-  .pipe(mocha({reporter: 'list'}))
+gulp.task('mocha', () => gulp.src(['test/*.js'], { read: false, allowEmpty: true })
+  .pipe(mocha({ reporter: 'list' }))
   .on('error', gutil.log));
 
 gulp.task('lint', () => {

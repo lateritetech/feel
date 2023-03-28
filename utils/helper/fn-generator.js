@@ -9,20 +9,9 @@ const Big = require('big.js');
 const _ = require('lodash');
 const { valueT, valueInverseT, valueDT, valueInverseDT, valueDTD, valueInverseDTD, valueYMD, valueInverseYMD } = require('./value');
 const { date, time, 'date and time': dateandtime } = require('../built-in-functions');
-const { logger } = require('../../logger');
-const { enableExecutionLogging } = require('../../settings');
 const moment = require('moment-timezone');
 
-const $log = logger('fn-generator');
-const log = {};
 
-Object.keys($log).forEach((key) => {
-  log[key] = (...args) => {
-    if (enableExecutionLogging) {
-      $log[key](...args);
-    }
-  };
-});
 /*
 dateTimeComponent contains the list of properties required for comparision.
 property collection is in the order of priority of check
@@ -46,7 +35,7 @@ const operatorMap = {
   '<': _.curry((x, y) => {
     try {
       if (presencetypeEq(x, y)) {
-        log.debug(`performing operation - ${x} < ${y}`);
+        // log.debug(`performing operation - ${x} < ${y}`);
         if (typeof x === 'number' && typeof y === 'number') {
           return Big(x).lt(y);
         } else if (typeof x === 'string' && typeof y === 'string') {
@@ -76,7 +65,7 @@ const operatorMap = {
   '<=': _.curry((x, y) => {
     try {
       if (presencetypeEq(x, y)) {
-        log.debug(`performing operation - ${x} <= ${y}`);
+        // log.debug(`performing operation - ${x} <= ${y}`);
         if (typeof x === 'number' && typeof y === 'number') {
           return Big(x).lte(y);
         } else if (typeof x === 'string' && typeof y === 'string') {
@@ -106,7 +95,7 @@ const operatorMap = {
   '>': _.curry((x, y) => {
     try {
       if (presencetypeEq(x, y)) {
-        log.debug(`performing operation - ${x} > ${y}`);
+        // log.debug(`performing operation - ${x} > ${y}`);
         if (typeof x === 'number' && typeof y === 'number') {
           return Big(x).gt(y);
         } else if (typeof x === 'string' && typeof y === 'string') {
@@ -136,7 +125,7 @@ const operatorMap = {
   '>=': _.curry((x, y) => {
     try {
       if (presencetypeEq(x, y)) {
-        log.debug(`performing operation - ${x} >= ${y}`);
+        // log.debug(`performing operation - ${x} >= ${y}`);
         if (typeof x === 'number' && typeof y === 'number') {
           return Big(x).gte(y);
         } else if (typeof x === 'string' && typeof y === 'string') {
@@ -164,7 +153,7 @@ const operatorMap = {
     }
   }),
   '==': _.curry((x, y) => {
-    log.debug(`performing operation - ${x} = ${y}`);
+    // log.debug(`performing operation - ${x} = ${y}`);
     try {
       if (typeof x === 'undefined' && typeof y === 'undefined') {
         return true;
@@ -201,24 +190,24 @@ const operatorMap = {
     }
   }),
   '!=': _.curry((x, y) => {
-    log.debug(`performing operation - ${x} != ${y}`);
+    // log.debug(`performing operation - ${x} != ${y}`);
     try {
       return !(operatorMap['=='](x, y));
     } catch (err) {
       throw err;
     }
   }),
-  '||': _.curry((x, y) => {
-    log.debug(`performing operation - ${x} or ${y}`);
-    return x || y;
-  }),
-  '&&': _.curry((x, y) => {
-    log.debug(`performing operation - ${x} and ${y}`);
-    return x && y;
-  }),
+  '||': _.curry((x, y) =>
+    // log.debug(`performing operation - ${x} or ${y}`);
+    x || y,
+  ),
+  '&&': _.curry((x, y) =>
+    // log.debug(`performing operation - ${x} and ${y}`);
+    x && y,
+  ),
   '+': _.curry((x, y) => {
     if (presence(x, y)) {
-      log.debug(`performing operation - ${x} + ${y}`);
+      // log.debug(`performing operation - ${x} + ${y}`);
       if (typeof x === 'number' && typeof y === 'number') {
         return Number(Big(x).plus(y));
       } else if (typeof x === 'string' && typeof y === 'string') {
@@ -254,7 +243,7 @@ const operatorMap = {
       return -y;
     }
     if (presence(x, y)) {
-      log.debug(`performing operation - ${x} - ${y}`);
+      // log.debug(`performing operation - ${x} - ${y}`);
       if (typeof x === 'number' && typeof y === 'number') {
         return Number(Big(x).minus(y));
       } else if (typeof x === 'string' && typeof y === 'string') {
@@ -295,7 +284,7 @@ const operatorMap = {
 
   '*': _.curry((x, y) => {
     if (presence(x, y)) {
-      log.debug(`performing operation - ${x} * ${y}`);
+      // log.debug(`performing operation - ${x} * ${y}`);
       if (typeof x === 'number' && typeof y === 'number') {
         return Number(Big(x).times(y));
       } else if (x.isYmd && typeof y === 'number') {
@@ -313,7 +302,7 @@ const operatorMap = {
   }),
   '/': _.curry((x, y) => {
     if (presence(x, y)) {
-      log.debug(`performing operation - ${x} / ${y}`);
+      // log.debug(`performing operation - ${x} / ${y}`);
       if (typeof x === 'number' && typeof y === 'number') {
         return Number(Big(x).div(y));
       } else if (x.isYmd && typeof y === 'number') {
@@ -332,7 +321,7 @@ const operatorMap = {
 
   '**': _.curry((x, y) => {
     if (presence(x, y)) {
-      log.debug(`performing operation - ${x} ** ${y}`);
+      // log.debug(`performing operation - ${x} ** ${y}`);
       if (typeof x === 'number' && typeof y === 'number') {
         return Number(Big(x).pow(y));
       }
