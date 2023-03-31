@@ -183,9 +183,9 @@ const traverseDecisionTreeUtil = (root, payload) => {
             res = res.map(obj => obj.index);
             resolve(res);
           }).catch(err => reject(err));
-        } else if (decisionMap[classKey]) {
+        } else if (_.get(decisionMap,classKey)) {
           //! the input expression can be resolved from the decisionMap
-          const decision = decisionMap[classKey];
+          const decision = _.get(decisionMap,classKey);
           decision.build(payload)
             .then((value) => {
               Promise.all(sentinelKeys.map(key => node.children[key].ast.build(payload, {}, 'input')))

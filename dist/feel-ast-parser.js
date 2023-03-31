@@ -482,7 +482,7 @@ module.exports = function (ast) {
           });
         }, Promise.resolve(args))
         .then((result) => {
-          const value = result.context ? result.context : result;
+          const value = result && result.context ? result.context : result;
           // log.debug(options, `PathExpressionNode build success with result - ${value},text: ${this.text}`);
           // rlog.debug(options, 'PathExpressionNode build success', this.rule, this.text, value);
           resolve(value);
