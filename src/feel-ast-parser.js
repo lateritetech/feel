@@ -478,7 +478,7 @@ module.exports = function (ast) {
                 : argsNew.map(arg => expr.build({ kwargs: arg }));
               return Promise.all(pArray);
             }
-            return (argsNew.context || argsNew.kwargs) ? expr.build(argsNew) : expr.build({ kwargs: argsNew });
+            return (argsNew && (argsNew.context || argsNew.kwargs)) ? expr.build(argsNew) : expr.build({ kwargs: argsNew });
           });
         }, Promise.resolve(args))
         .then((result) => {
